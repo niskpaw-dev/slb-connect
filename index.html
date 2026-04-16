@@ -135,7 +135,26 @@ input[type="text"] { text-transform: uppercase; }
 #qrcode canvas {
     display: none !important; /* Sorokkan canvas asal */
 }
-    </style>
+/* Responsif untuk Skrin Telefon Bimbit (Mobile Edge-to-Edge) */
+@media (max-width: 640px) {
+    body {
+        padding: 0; /* Buang ruang kosong di sekeliling skrin */
+        background: var(--cream-bg); /* Tukar latar belakang body supaya selari dengan kotak */
+    }
+    
+    .glass-card {
+        border-radius: 0; /* Buang bucu bulat */
+        border: none; /* Buang garisan sempadan */
+        box-shadow: none; /* Buang bayang-bayang */
+        min-height: 100vh; /* Pastikan kotak memenuhi ketinggian 100% skrin */
+        padding: 2rem 1.5rem; /* Selaraskan padding atas/bawah dan kiri/kanan */
+        background: rgba(253, 251, 247, 1); /* Jadikan warna solid tanpa lutsinar */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Kekalkan borang di tengah-tengah secara menegak */
+    }
+}   
+</style>
 </head>
 <body>
 

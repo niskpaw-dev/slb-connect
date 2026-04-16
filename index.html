@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Penduduk | JPKK Kampung Sungai Lang Baru</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+        :root {
+            --primary-green: #064e3b;
+            --light-green: #059669;
+            --cream-bg: #fdfbf7;
+            --gold-accent: #d4af37;
+        }
+
+body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top left, #065f46, #064e3b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #1a1a1a;
+        }
+
+/* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(253, 251, 247, 0.96);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 650px;
+            padding: 2.5rem;
+        }
+
+input[type="text"] { text-transform: uppercase; }
+
+.btn-liquid {
+            background: linear-gradient(45deg, #059669, #10b981);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+.btn-liquid:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(5, 150, 105, 0.4);
+        }
+
+.btn-outline {
+            background: transparent;
+            border: 2px solid #059669;
+            color: #059669;
+            transition: all 0.3s ease;
+        }
+
+.btn-outline:hover {
+            background: #059669;
+            color: white;
+        }
+
+.input-field {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+.input-field:focus {
+            border-color: #059669;
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+            outline: none;
+        }
+
+#resultSection { display: none; }
+
+/* Animasi Transisi Halus */
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+.logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+.jata-selangor-img { height: 60px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .jpkk-logo-img { height: 70px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+.slip-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+.slip-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #059669, #d4af37);
+        }
+
+/* FIX QR CODE: Kunci saiz supaya tidak kempis */
+        #qrcode {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#qrcode img {
+    width: 160px !important;
+    height: 160px !important;
+    display: block !important; /* Pastikan imej dipaparkan */
+}
+#qrcode canvas {
+    display: none !important; /* Sorokkan canvas asal */
+}
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+        <div id="connectionStatus" class="flex justify-end mb-4">
+            <span class="text-[10px] font-black px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 tracking-widest uppercase">Talian Stabil</span>
+        </div>
+
+<div id="formSection" class="fade-in">
+            <div class="text-center mb-10">
+                <div class="logo-container">
+                    <img src="https://i.postimg.cc/zvqwLVty/Untitled-design-20260416-103904-0000.png" crossorigin="anonymous" alt="Jata Selangor" class="jata-selangor-img">
+                    <img src="https://i.postimg.cc/VLQQh1Sq/Untitled-design-20260416-103537-0000.png" crossorigin="anonymous" alt="Logo JPKK" class="jpkk-logo-img">
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-emerald-950 leading-tight uppercase tracking-tight">Sistem Pendaftaran Penduduk</h1>
+                <p class="text-emerald-700 font-semibold mt-1 uppercase tracking-widest text-[10px]">JPKK Kampung Sungai Lang Baru</p>
+                <div class="flex justify-center mt-5 gap-1">
+                    <div class="w-16 h-1.5 bg-emerald-700 rounded-full"></div>
+                    <div class="w-2.5 h-1.5 bg-amber-500 rounded-full"></div>
+                </div>
+            </div>
+
+<form id="regForm" class="space-y-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-black text-emerald-900 mb-2 tracking-[0.2em]">NAMA PENUH (MYKAD)</label>
+                        <input type="text" name="nama" id="inputNama" required placeholder="CONTOH: ROSNI BIN MISTAM" class="input-field w-full px-5 py-4 rounded-2xl font-semibold">
+                    </div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-black text-emerald-900 mb-2 tracking-[0.2em]">NO. KAD PENGENALAN</label>
+                            <input type="tel" name="ic" id="inputIC" required placeholder="880101-10-5555" inputmode="numeric" maxlength="14" class="input-field w-full px-5 py-4 rounded-2xl font-semibold transition-colors duration-300">
+                            <span id="icError" class="text-[9px] font-bold text-red-500 tracking-wider mt-2 hidden uppercase block">Format MyKad Tidak Sah</span>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-black text-emerald-900 mb-2 tracking-[0.2em]">NO. TELEFON</label>
+                            <input type="tel" name="phone" id="inputPhone" required placeholder="012 345 6789" inputmode="numeric" maxlength="13" class="input-field w-full px-5 py-4 rounded-2xl font-semibold">
+                        </div>
+                    </div>
+                </div>
+
+<div class="bg-emerald-50/70 border border-emerald-100 rounded-3xl p-6 space-y-4">
+                    <label class="block text-[11px] font-black text-emerald-900 tracking-[0.2em] border-b border-emerald-100 pb-2 uppercase">Alamat Kediaman Sungai Lang Baru</label>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-1">
+                            <label class="block text-[9px] font-bold text-emerald-600 mb-1 tracking-wider uppercase">No. Rumah / Lot</label>
+                            <input type="text" name="no_rumah" id="inputNoRumah" required placeholder="LOT 2974" class="input-field w-full px-4 py-3 rounded-xl text-sm font-bold">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[9px] font-bold text-emerald-600 mb-1 tracking-wider uppercase">Jalan / Lorong / Zon</label>
+                            <select name="lorong" id="inputLorong" required class="input-field w-full px-4 py-3 rounded-xl appearance-none cursor-pointer text-sm font-bold text-gray-700">
+                                <option value="">SILA PILIH...</option>
+                                <option value="JALAN UTAMA">JALAN UTAMA</option>
+                                <option value="LORONG 1">LORONG 1</option>
+                                <option value="LORONG 2">LORONG 2</option>
+                                <option value="LORONG 3">LORONG 3</option>
+                                <option value="LORONG 4">LORONG 4</option>
+                                <option value="LORONG 5">LORONG 5</option>
+                                <option value="LORONG IDAMAN">LORONG IDAMAN</option>
+                                <option value="LORONG HAJI DARINI">LORONG HAJI DARINI</option>
+                                <option value="TAMAN CEMPAKA">TAMAN CEMPAKA</option>
+                                <option value="TAMAN BERINGIN">TAMAN BERINGIN</option>
+                                <option value="TAMAN MAWAR">TAMAN MAWAR</option>
+                            </select>
+                        </div>
+                    </div>
+
+<div class="text-center pt-2">
+                        <p class="text-[10px] font-bold text-emerald-950 tracking-widest uppercase opacity-60">Kampung Sungai Lang Baru, 42700 Banting, Selangor</p>
+                    </div>
+                </div>
+
+<div>
+                    <label class="block text-[11px] font-black text-emerald-900 mb-2 tracking-[0.2em]">BILANGAN TANGGUNGAN</label>
+                    <input type="number" name="tanggungan" min="0" placeholder="0" inputmode="numeric" class="input-field w-full px-5 py-4 rounded-2xl font-semibold">
+                </div>
+
+<div class="pt-3">
+                    <button type="submit" class="btn-liquid w-full py-4 rounded-2xl text-white font-black text-lg shadow-xl tracking-[0.1em]">HANTAR PENDAFTARAN</button>
+                </div>
+            </form>
+        </div>
+
+<div id="resultSection" class="text-center">
+            <h2 class="text-3xl font-extrabold text-emerald-950 mb-8 uppercase tracking-tight">Pendaftaran Berjaya</h2>
+
+<div id="slipCard" class="slip-card">
+                <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-5 gap-3">
+                    <img src="https://i.postimg.cc/zvqwLVty/Untitled-design-20260416-103904-0000.png" crossorigin="anonymous" class="jata-selangor-img h-12 w-auto">
+                    <div class="text-right flex-1">
+                        <p class="text-[11px] font-black text-emerald-900 tracking-[0.3em] uppercase leading-tight">ID Rasmi Penduduk</p>
+                        <p class="text-[9px] text-gray-400 uppercase tracking-wider mt-1.5">Sungai Lang Baru Digital Portal</p>
+                    </div>
+                    <img src="https://i.postimg.cc/VLQQh1Sq/Untitled-design-20260416-103537-0000.png" crossorigin="anonymous" class="jpkk-logo-img h-14 w-auto">
+                </div>
+
+<div class="space-y-5">
+                    <div>
+                        <p class="text-[9px] font-black text-gray-300 tracking-[0.4em] mb-1.5 uppercase">ID Unik Pendaftaran</p>
+                        <p id="displayID" class="text-2xl md:text-3xl font-black text-emerald-700 tracking-tighter leading-none"></p>
+                    </div>
+
+<div class="relative mx-auto bg-white p-3 rounded-2xl border border-gray-200 shadow-sm mb-5" style="width: 186px; height: 186px;">
+                        <div id="qrcode"></div>
+                        <img src="https://i.postimg.cc/VLQQh1Sq/Untitled-design-20260416-103537-0000.png" crossorigin="anonymous" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45px] h-auto object-contain bg-white p-1 rounded-lg">
+                    </div>
+
+<div class="bg-gray-50 rounded-2xl p-5 text-left border border-gray-100 space-y-4">
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1">Nama Penuh</p>
+                            <p id="resNama" class="text-sm font-bold text-gray-800 uppercase leading-snug"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 border-y border-gray-100 py-3.5">
+                            <div>
+                                <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1">Tanggungan</p>
+                                <p id="resTanggungan" class="text-sm font-bold text-emerald-800"></p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1">Tarikh</p>
+                                <p id="resTarikh" class="text-sm font-bold text-gray-800"></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1">Alamat Kediaman Sungai Lang Baru</p>
+                            <p id="resAlamatPenuh" class="text-[10px] font-black text-emerald-700 leading-normal uppercase"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="space-y-4 pt-2">
+                <button onclick="muatTurunSlip()" id="btnDownload" class="btn-liquid w-full py-4 rounded-2xl text-white font-black text-base shadow-xl tracking-widest flex items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    SIMPAN KAD ID (PNG)
+                </button>
+                <button onclick="window.location.reload()" class="btn-outline w-full py-3.5 rounded-2xl font-bold text-xs tracking-widest uppercase opacity-70">Daftar Individu Lain</button>
+            </div>
+        </div>
+
+<div class="mt-12 pt-7 border-t border-gray-100 text-center">
+            <p class="text-[8px] text-gray-400 tracking-[0.5em] uppercase mb-1">© 2026 JPKK KAMPUNG SUNGAI LANG BARU</p>
+            <p class="text-[10px] font-extrabold text-emerald-900 tracking-[0.2em] uppercase">Digitally Crafted by <span class="text-amber-600">NISKALA PAWAKA</span></p>
+        </div>
+    </div>
+
+<script>
+        document.getElementById('inputNama').addEventListener('input', function(e) { this.value = this.value.toUpperCase(); });
+        document.getElementById('inputNoRumah').addEventListener('input', function(e) { this.value = this.value.toUpperCase(); });
+        
+        // Setup Variables for IC Validation
+        const inputIC = document.getElementById('inputIC');
+        const icError = document.getElementById('icError');
+
+        // Fungsi Semakan Algoritma MyKad
+        function sahkanMyKad(icStr) {
+            const ic = icStr.replace(/-/g, '');
+            if (ic.length !== 12) return false;
+
+            const month = parseInt(ic.substring(2, 4), 10);
+            const day = parseInt(ic.substring(4, 6), 10);
+            const stateCode = parseInt(ic.substring(6, 8), 10);
+
+            if (month < 1 || month > 12) return false;
+            if (day < 1 || day > 31) return false;
+
+            const invalidStateCodes = [0, 17, 18, 19, 20, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 80, 81];
+            if (invalidStateCodes.includes(stateCode)) return false;
+
+            return true;
+        }
+
+        // IC Input Masking & Real-time Validation
+        inputIC.addEventListener('input', function(e) {
+            let val = this.value.replace(/\D/g, ''); 
+            let out = '';
+            
+            if (val.length > 0) {
+                out += val.substring(0, 6);
+                if (val.length > 6) out += '-' + val.substring(6, 8);
+                if (val.length > 8) out += '-' + val.substring(8, 12);
+            }
+            this.value = out;
+
+            if (this.value.length === 14) {
+                if (sahkanMyKad(this.value)) {
+                    this.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                    this.classList.add('border-emerald-500', 'bg-emerald-50/30');
+                    icError.classList.add('hidden');
+                } else {
+                    this.classList.remove('border-emerald-500', 'bg-emerald-50/30');
+                    this.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-200');
+                    icError.classList.remove('hidden');
+                }
+            } else {
+                this.classList.remove('border-red-500', 'border-emerald-500', 'bg-emerald-50/30', 'focus:border-red-500', 'focus:ring-red-200');
+                icError.classList.add('hidden');
+            }
+        });
+
+        // Phone Input Masking
+        document.getElementById('inputPhone').addEventListener('input', function(e) {
+    let val = this.value.replace(/\D/g, ''); // Buang aksara selain nombor
+    let out = '';
+    
+    if (val.length > 0) {
+        out += val.substring(0, 3); // 3 digit pertama (Cth: 012)
+        
+        if (val.length > 3) {
+            // Jika nombor bermula 011 atau jumlah keseluruhan mencapai 11 digit
+            if (val.startsWith('011') || val.length > 10) {
+                // Format: 3-4-4 (Cth: 012 3456 7890 atau 011 1234 5678)
+                out += ' ' + val.substring(3, 7);
+                if (val.length > 7) out += ' ' + val.substring(7, 11);
+            } else {
+                // Format: 3-3-4 (Cth: 012 345 6789)
+                out += ' ' + val.substring(3, 6);
+                if (val.length > 6) out += ' ' + val.substring(6, 10);
+            }
+        }
+    }
+    this.value = out;
+});
+
+        function generateUniqueID() {
+            const date = new Date();
+            const year = date.getFullYear().toString().substr(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const random = Math.random().toString(36).substr(2, 4).toUpperCase();
+            return `SLB-${year}${month}${day}-${random}`;
+        }
+
+        const regForm = document.getElementById('regForm');
+        regForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Final IC Validation before submit
+            const icValue = document.getElementById('inputIC').value;
+            if (icValue.length !== 14 || !sahkanMyKad(icValue)) {
+                alert("Sila semak semula No. Kad Pengenalan. Format yang dimasukkan tidak sah.");
+                document.getElementById('inputIC').focus();
+                return; 
+            }
+            
+            try {
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+                
+                const uniqueID = generateUniqueID();
+                const fullAddress = `${data.no_rumah}, ${data.lorong}, KAMPUNG SUNGAI LANG BARU, 42700 BANTING, SELANGOR`;
+                
+                // Better Date Formatting
+                const d = new Date();
+                const tarikhHariIni = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+                
+                document.getElementById('qrcode').innerHTML = ""; 
+                
+                document.getElementById('qrcode').innerHTML = ""; 
+
+// 1. Jana QR Code menggunakan qrcode.js
+new QRCode(document.getElementById("qrcode"), {
+    text: uniqueID,
+    width: 160,
+    height: 160,
+    colorDark : "#064e3b",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H 
+});
+
+// 2. TUKAR CANVAS KEPADA IMEJ STATIK UNTUK HTML2CANVAS
+setTimeout(() => {
+    const qrContainer = document.getElementById('qrcode');
+    const qrCanvas = qrContainer.querySelector('canvas');
+    if (qrCanvas) {
+        const qrImage = document.createElement("img");
+        qrImage.src = qrCanvas.toDataURL("image/png");
+        qrContainer.innerHTML = ""; // Padam elemen canvas asal
+        qrContainer.appendChild(qrImage); // Gantikan dengan elemen <img> kekal
+    }
+}, 100); // Beri masa 100ms untuk QR dilukis sebelum ditukar ke imej);
+
+                document.getElementById('displayID').innerText = uniqueID;
+                document.getElementById('resNama').innerText = data.nama;
+                document.getElementById('resTanggungan').innerText = data.tanggungan || "0";
+                document.getElementById('resTarikh').innerText = tarikhHariIni;
+                document.getElementById('resAlamatPenuh').innerText = fullAddress;
+                
+                document.getElementById('formSection').style.display = 'none';
+                
+                const resultSection = document.getElementById('resultSection');
+                resultSection.style.display = 'block';
+                resultSection.classList.add('fade-in'); // Trigger animation
+                
+            } catch (error) {
+                console.error("Ralat Borang:", error);
+                alert("Sistem mengalami ralat ketika memproses borang. Sila cuba sebentar lagi.");
+            }
+        });
+
+        function muatTurunSlip() {
+            const slip = document.getElementById('slipCard');
+            const btn = document.getElementById('btnDownload');
+            const id = document.getElementById('displayID').innerText;
+            
+            const originalText = btn.innerHTML;
+            btn.innerText = "MENJANA IMEJ...";
+            btn.disabled = true;
+
+            html2canvas(slip, { 
+                scale: 3, 
+                backgroundColor: "#ffffff",
+                useCORS: true,
+                allowTaint: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `ID_PENDUDUK_${id}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                btn.innerHTML = `KAD DISIMPAN!`;
+                setTimeout(() => { 
+                    btn.disabled = false;
+                    btn.innerHTML = originalText; 
+                }, 2000);
+            }).catch(err => {
+                console.error("Ralat Muat Turun:", err);
+                alert("Sistem gagal menyimpan gambar. Sila pastikan talian internet stabil.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>

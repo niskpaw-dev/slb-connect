@@ -214,7 +214,40 @@ input[type="text"] { text-transform: uppercase; }
                     <label class="block text-[11px] font-black text-emerald-900 mb-2 tracking-[0.2em]">BILANGAN TANGGUNGAN</label>
                     <input type="number" name="tanggungan" min="0" placeholder="0" inputmode="numeric" class="input-field w-full px-5 py-4 rounded-2xl font-semibold">
                 </div>
+<div class="bg-red-50/60 border border-red-100 rounded-3xl p-6 space-y-4 mt-6">
+    <label class="block text-[11px] font-black text-red-900 tracking-[0.2em] border-b border-red-100 pb-2 uppercase flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+        </svg>
+        Maklumat Waris (Kecemasan / ICE)
+    </label>
 
+<div class="space-y-4">
+        <div>
+            <label class="block text-[11px] font-black text-red-900 mb-2 tracking-[0.2em]">NAMA WARIS</label>
+            <input type="text" name="nama_waris" id="inputNamaWaris" required placeholder="CONTOH: SITI AMINAH BINTI KASSIM" class="input-field w-full px-5 py-4 rounded-2xl font-semibold focus:border-red-500 focus:ring-red-100 border-red-100">
+        </div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[11px] font-black text-red-900 mb-2 tracking-[0.2em]">HUBUNGAN</label>
+                <select name="hubungan_waris" id="inputHubunganWaris" required class="input-field w-full px-5 py-4 rounded-2xl appearance-none cursor-pointer font-bold text-gray-700 focus:border-red-500 focus:ring-red-100 border-red-100">
+                    <option value="">SILA PILIH...</option>
+                    <option value="ISTERI">ISTERI</option>
+                    <option value="SUAMI">SUAMI</option>
+                    <option value="IBU / BAPA">IBU / BAPA</option>
+                    <option value="ANAK">ANAK</option>
+                    <option value="ADIK-BERADIK">ADIK-BERADIK</option>
+                    <option value="LAIN-LAIN">LAIN-LAIN</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[11px] font-black text-red-900 mb-2 tracking-[0.2em]">NO. TELEFON WARIS</label>
+                <input type="tel" name="phone_waris" id="inputPhoneWaris" required placeholder="012 345 6789" inputmode="numeric" maxlength="13" class="input-field w-full px-5 py-4 rounded-2xl font-semibold focus:border-red-500 focus:ring-red-100 border-red-100">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="pt-3">
                     <button type="submit" class="btn-liquid w-full py-4 rounded-2xl text-white font-black text-lg shadow-xl tracking-[0.1em]">HANTAR PENDAFTARAN</button>
                 </div>
@@ -264,6 +297,14 @@ input[type="text"] { text-transform: uppercase; }
                             <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1">Alamat Kediaman Sungai Lang Baru</p>
                             <p id="resAlamatPenuh" class="text-[10px] font-black text-emerald-700 leading-normal uppercase"></p>
                         </div>
+	<div class="mt-4 border-t border-gray-200 pt-3.5">
+    <div class="flex items-center gap-2 mb-1.5">
+        <span class="bg-red-100 text-red-700 text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-widest">ICE</span>
+        <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase">Waris Terdekat</p>
+    </div>
+    <p id="resNamaWaris" class="text-[10px] font-bold text-gray-800 uppercase leading-snug"></p>
+    <p class="text-[10px] font-bold text-red-700 mt-0.5 tracking-wide"><span id="resHubunganWaris"></span> • <span id="resPhoneWaris"></span></p>
+</div>
                     </div>
                 </div>
             </div>
@@ -362,7 +403,29 @@ input[type="text"] { text-transform: uppercase; }
     }
     this.value = out;
 });
+// Memaksa huruf besar untuk nama waris
+document.getElementById('inputNamaWaris').addEventListener('input', function(e) { 
+    this.value = this.value.toUpperCase(); 
+});
 
+// Guna semula fungsi format No Telefon untuk Waris (Pintar 3-3-4 / 3-4-4)
+document.getElementById('inputPhoneWaris').addEventListener('input', function(e) {
+    let val = this.value.replace(/\D/g, ''); 
+    let out = '';
+    if (val.length > 0) {
+        out += val.substring(0, 3);
+        if (val.length > 3) {
+            if (val.startsWith('011') || val.length > 10) {
+                out += ' ' + val.substring(3, 7);
+                if (val.length > 7) out += ' ' + val.substring(7, 11);
+            } else {
+                out += ' ' + val.substring(3, 6);
+                if (val.length > 6) out += ' ' + val.substring(6, 10);
+            }
+        }
+    }
+    this.value = out;
+});
         function generateUniqueID() {
             const date = new Date();
             const year = date.getFullYear().toString().substr(-2);
@@ -426,6 +489,9 @@ setTimeout(() => {
                 document.getElementById('resTanggungan').innerText = data.tanggungan || "0";
                 document.getElementById('resTarikh').innerText = tarikhHariIni;
                 document.getElementById('resAlamatPenuh').innerText = fullAddress;
+				document.getElementById('resNamaWaris').innerText = data.nama_waris;
+document.getElementById('resHubunganWaris').innerText = data.hubungan_waris;
+document.getElementById('resPhoneWaris').innerText = data.phone_waris;
                 
                 document.getElementById('formSection').style.display = 'none';
                 
